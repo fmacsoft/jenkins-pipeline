@@ -31,6 +31,10 @@ parameters {
         sh "echo ${env.BUILD_NUMBER}"
         sh "echo ${env.ARTIFACTOR}"
         sh "touch ${ARTIFACTOR}"
+        script {
+          def ID = sh(returnStdout: true, script: "./ami_id.sh").trim()
+          sh "./build_ami.sh ${ID}"
+        }
       }
     }
     stage("Test") {
@@ -39,7 +43,6 @@ parameters {
           syntax: { sh "echo syntax" },
           grep: { sh "echo 'grep'" }
         )
-
       }
     }
     stage("Deploy") {
