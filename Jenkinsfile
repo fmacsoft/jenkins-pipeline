@@ -59,5 +59,14 @@ parameters {
       }
     }
   } 
+
+  post {
+    always {
+      archiveArtifacts artifacts: "${ARTIFACTOR}", onlyIfSuccessful: true
+      sh "rm -f ${ARTIFACTOR}"
+      echo "Job has finished"
+    }
+  }
+
 }
 
