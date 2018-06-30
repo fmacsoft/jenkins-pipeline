@@ -13,7 +13,7 @@ pipeline {
 parameters {
     string(name: 'SLACK_CHANNEL', defaultValue: '#deploys', description: '')
     choice(name: 'TYPE', choices: 'aut\ncron\ndata', description: 'Autoscaling, Cron or Data')
-    booleanParam(name: 'LAUNCH_CONFIGURATION', defaultValue: false, description: 'Update aws new ami')
+    booleanParam(name: DEPLOY, defaultValue: false, description: 'Deploy to server')
   }
 
 
@@ -46,9 +46,13 @@ parameters {
       }
     }
     stage("Deploy") {
+      when {
+        expression {
+          return params.DEPLOY ==~ /(?i)(Y|YES|T|TRUE|ON|RUN)/
+        }
+      }
       steps {
-        sh "echo deploy"
-        archiveArtifacts artifacts: "${ARTIFACTOR}", onlyIfSuccessful: true
+        sh "echo deploy_servers"
       }
     }
   } 
