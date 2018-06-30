@@ -13,7 +13,7 @@ pipeline {
 parameters {
     string(name: 'SLACK_CHANNEL', defaultValue: '#deploys', description: '')
     choice(name: 'TYPE', choices: 'aut\ncron\ndata', description: 'Autoscaling, Cron or Data')
-    booleanParam(name: DEPLOY, defaultValue: false, description: 'Deploy to server')
+    booleanParam(name: 'DEPLOY', defaultValue: false, description: 'Deploy to server')
   }
 
 
