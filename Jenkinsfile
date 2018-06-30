@@ -1,5 +1,17 @@
 pipeline {
   agent any
+
+  options {
+    ansiColor('xterm')
+    timestamps()
+    timeout(time: 1, unit: 'HOURS')
+  }
+  environment {
+    ARTIFACTOR = "${env.BUILD_NUMBER}.zip"
+    SLACK_MESSAGE = "Job '${env.JOB_NAME}' Build ${env.BUILD_NUMBER}"
+  }
+
+
   stages {
     stage("Repository") {
       steps {
@@ -11,6 +23,7 @@ pipeline {
       steps {
         echo "build"
         sh "echo ${env.BUILD_NUMBER}"
+        sh "echo ${env.ARTIFACTOR}"
       }
     }
     stage("Test") {
@@ -21,6 +34,7 @@ pipeline {
     stage("Deploy") {
       steps {
         sh "echo deploy"
+        archiveArtifacts artifacts: "${ARTIFACTOR}", onlyIfSuccessful: true
       }
     }
   } 
